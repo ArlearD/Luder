@@ -1,0 +1,34 @@
+using UnityEngine;
+using UnityEngine.Rendering.HighDefinition;
+public class ShadowResolutionOverride : MonoBehaviour
+{
+    public HDAdditionalLightData hdrpLightdata;
+    // Start is called before the first frame update
+    void Start()
+    {
+        //MAKE SURE TO ENABLE CUSTOM SHADOW RESOLUTION ON LIGHT!
+        hdrpLightdata = gameObject.GetComponent<HDAdditionalLightData>();
+        //HIGH
+        if (PlayerPrefs.GetInt("ShadowRes_Mode") == 0)
+        {
+            hdrpLightdata.SetShadowResolution(2048);
+        }
+        //MEDIUM
+        if (PlayerPrefs.GetInt("ShadowRes_Mode") == 1)
+        {
+            hdrpLightdata.SetShadowResolution(1024);
+        }
+        //LOW
+        if (PlayerPrefs.GetInt("ShadowRes_Mode") == 2)
+        {
+            hdrpLightdata.SetShadowResolution(512);
+        }
+        //POOR
+        if (PlayerPrefs.GetInt("ShadowRes_Mode") == 3)
+        {
+            hdrpLightdata.SetShadowResolution(256);
+        }
+
+    }
+
+}

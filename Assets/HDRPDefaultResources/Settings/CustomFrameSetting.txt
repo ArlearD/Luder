@@ -1,0 +1,95 @@
+using System.Collections;
+using UnityEngine.Rendering.HighDefinition;
+using UnityEngine;
+using System;
+
+public class CustomFrameSetting : MonoBehaviour
+{
+
+    private HDAdditionalCameraData _cameraData;
+    private FrameSettings _frameSettings;
+    private FrameSettingsOverrideMask _frameSettingsOverrideMask;
+
+    void Start()
+    {
+        //Getting components
+        _cameraData = this.GetComponent<HDAdditionalCameraData>();
+        _frameSettings = _cameraData.renderingPathCustomFrameSettings;
+        _frameSettingsOverrideMask = _cameraData.renderingPathCustomFrameSettingsOverrideMask;
+
+        //Make sure Custom Frame Settings are enabled in the camera
+        _cameraData.customRenderingSettings = true;
+
+        //enable lod bias and lod bias mode for overwrite
+        _frameSettingsOverrideMask.mask[(uint)FrameSettingsField.LODBias] = true;
+        _frameSettingsOverrideMask.mask[(uint)FrameSettingsField.LODBiasMode] = true;
+
+        //...
+
+        //Applying the frame setting mask back to the camera
+        _cameraData.renderingPathCustomFrameSettingsOverrideMask = _frameSettingsOverrideMask;
+
+        //Ultra
+        if (PlayerPrefs.GetInt("LOD_BiasMode") == 0)
+        {
+            _frameSettings.lodBias = 2.2f;
+            _frameSettings.lodBiasMode = LODBiasMode.OverrideQualitySettings;
+            SetFrameSettings(_frameSettings);
+        }
+        //High
+        if (PlayerPrefs.GetInt("LOD_BiasMode") == 1)
+        {
+            _frameSettings.lodBias = 1.7f;
+            _frameSettings.lodBiasMode = LODBiasMode.OverrideQualitySettings;
+            SetFrameSettings(_frameSettings);
+        }
+        //Med
+        if (PlayerPrefs.GetInt("LOD_BiasMode") == 2)
+        {
+            _frameSettings.lodBias = 1.2f;
+            _frameSettings.lodBiasMode = LODBiasMode.OverrideQualitySettings;
+            SetFrameSettings(_frameSettings);
+        }
+        //Low
+        if (PlayerPrefs.GetInt("LOD_BiasMode") == 3)
+        {
+            _frameSettings.lodBias = 0.6f;
+            _frameSettings.lodBiasMode = LODBiasMode.OverrideQualitySettings;
+            SetFrameSettings(_frameSettings);
+        }
+        //Very Low
+        if (PlayerPrefs.GetInt("LOD_BiasMode") == 4)
+        {
+            _frameSettings.lodBias = 0.5f;
+            _frameSettings.lodBiasMode = LODBiasMode.OverrideQualitySettings;
+            SetFrameSettings(_frameSettings);
+        }
+    }
+
+    private void SetFrameSettings(FrameSettings frameSettings)
+    {
+        _cameraData.renderingPathCustomFrameSettings = frameSettings;
+    }
+
+    void Update()
+    {
+        //for testing 
+
+        /*
+        if (Input.GetKeyDown(KeyCode.J))
+        {
+            //use quality settings
+            _frameSettings.lodBiasMode = LODBiasMode.FromQualitySettings;
+            SetFrameSettings(_frameSettings);
+        }
+
+        if (Input.GetKeyDown(KeyCode.K))
+        {
+            //override lod bias
+            _frameSettings.lodBias = 10f;
+            _frameSettings.lodBiasMode = LODBiasMode.OverrideQualitySettings;
+            SetFrameSettings(_frameSettings);
+        }
+        */
+    }
+}

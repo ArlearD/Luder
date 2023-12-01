@@ -1,0 +1,80 @@
+using UnityEngine;
+using UnityEngine.Rendering.HighDefinition;
+public class CameraSettings : MonoBehaviour
+{
+    public Camera myCamera;
+    public HDAdditionalCameraData hdCamera;
+    void Awake()
+    {
+        hdCamera = gameObject.GetComponent<HDAdditionalCameraData>();
+        myCamera = gameObject.GetComponent<Camera>();
+
+    }
+    void Start()
+    {
+        //RENDER DISTANCE SETTINGS
+        //Ultra High
+        if (PlayerPrefs.GetInt("CamDistanceMode") == 0)
+        {
+            myCamera.farClipPlane = 1100f;
+        }
+        //High
+        if (PlayerPrefs.GetInt("CamDistanceMode") == 1)
+        {
+            myCamera.farClipPlane = 900f;
+        }
+        //Medium 
+        if (PlayerPrefs.GetInt("CamDistanceMode") == 2)
+        {
+            myCamera.farClipPlane = 700f;
+        }
+        //Low 
+        if (PlayerPrefs.GetInt("CamDistanceMode") == 3)
+        {
+            myCamera.farClipPlane = 500f;
+        }
+        //Very Low 
+        if (PlayerPrefs.GetInt("CamDistanceMode") == 4)
+        {
+            myCamera.farClipPlane = 300f;
+        }
+        //ANTI-ALIASING/DLSS SETTINGS
+        //DLSS OFF
+        if (PlayerPrefs.GetInt("DLSS_Mode") == 0)
+        {
+            //DLSS OFF
+            hdCamera.allowDynamicResolution = false;
+            hdCamera.allowDeepLearningSuperSampling = false;
+
+            //no AA
+            if (PlayerPrefs.GetInt("AA_Mode") == 0)
+            {
+                hdCamera.antialiasing = HDAdditionalCameraData.AntialiasingMode.None;
+            }
+            //SMAA
+            if (PlayerPrefs.GetInt("AA_Mode") == 1)
+            {
+                hdCamera.antialiasing = HDAdditionalCameraData.AntialiasingMode.SubpixelMorphologicalAntiAliasing;
+            }
+            //FXAA
+            if (PlayerPrefs.GetInt("AA_Mode") == 2)
+            {
+                hdCamera.antialiasing = HDAdditionalCameraData.AntialiasingMode.FastApproximateAntialiasing;
+            }
+        }
+        //DLSS ON
+        if (PlayerPrefs.GetInt("DLSS_Mode") == 1)
+        {
+            //Disable AA for DLSS (performance)
+            PlayerPrefs.SetInt("AA_Mode", 0);
+            PlayerPrefs.Save();
+            //DLSS ON
+            hdCamera.allowDynamicResolution = true;
+            hdCamera.allowDeepLearningSuperSampling = true;
+
+        }
+
+
+    }
+
+}

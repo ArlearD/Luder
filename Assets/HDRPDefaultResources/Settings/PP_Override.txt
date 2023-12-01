@@ -1,0 +1,46 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.HighDefinition;
+public class PP_Override : MonoBehaviour
+{
+    private float ShadowDistance;
+    public VolumeProfile globalVolumeProfile;
+
+    void Awake()
+    {
+        //globalVolumeProfile = gameObject.GetComponent<VolumeProfile>();
+        //SHADOW DISTANCE SETTINGS
+        //HIGH
+        if (PlayerPrefs.GetInt("ShadowMode") == 0)
+        {
+            ShadowDistance = 500f;
+        }
+        //MEDIUM
+        if (PlayerPrefs.GetInt("ShadowMode") == 1)
+        {
+            ShadowDistance = 450f;
+        }
+        //LOW
+        if (PlayerPrefs.GetInt("ShadowMode") == 2)
+        {
+            ShadowDistance = 350f;
+        }
+
+    }
+
+    void Start()
+    {
+        SetHDShadowDistance();        
+
+    }
+    public void SetHDShadowDistance()
+    {
+        if (globalVolumeProfile.TryGet<HDShadowSettings>(out var shadow))
+        {
+            shadow.maxShadowDistance.SetValue(new FloatParameter(ShadowDistance, true));
+        }
+    }
+
+}

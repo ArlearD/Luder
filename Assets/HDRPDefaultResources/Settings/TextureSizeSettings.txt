@@ -1,0 +1,65 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class TextureSizeSettings : MonoBehaviour
+{
+    public TMPro.TMP_Dropdown TextureSizeDropDown;
+    private float nextUpdate;
+    private float tickValue = 0.5f;
+    void Start()
+    {
+        int val = PlayerPrefs.GetInt("TextureSize");
+        TextureSizeDropDown.value = val;
+    }
+
+    public void SetTextureSize(int index)
+    {
+        PlayerPrefs.SetInt("TextureSize", index);
+    }
+    void Update()
+    {
+        
+        if (Time.time >= nextUpdate)
+        {
+            //Debug.Log(Time.time + ">=" + nextUpdate);
+            // Change the next update (current second+1)
+            nextUpdate = Mathf.FloorToInt(Time.time) + tickValue;
+            // Call your fonction
+            UpdateEachTick();
+        }
+        
+    }
+    public void UpdateEachTick()
+    {
+        //allows to change after preset swap
+        int val = PlayerPrefs.GetInt("TextureSize");
+        TextureSizeDropDown.value = val;
+        //Full
+        if (PlayerPrefs.GetInt("TextureSize") == 0)
+        {
+            QualitySettings.masterTextureLimit = 0;
+        }
+        //Half
+        if (PlayerPrefs.GetInt("TextureSize") == 1)
+        {
+            QualitySettings.masterTextureLimit = 1;
+        }
+        //Quarter
+        if (PlayerPrefs.GetInt("TextureSize") == 2)
+        {
+            QualitySettings.masterTextureLimit = 2;
+        }
+        //Eighth
+        if (PlayerPrefs.GetInt("TextureSize") == 3)
+        {
+            QualitySettings.masterTextureLimit = 3;
+        }
+        //Sixteenth
+        if (PlayerPrefs.GetInt("TextureSize") == 4)
+        {
+            QualitySettings.masterTextureLimit = 4;
+        }
+    }
+}
